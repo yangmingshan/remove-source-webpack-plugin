@@ -25,10 +25,13 @@ function RemoveSourceWebpackPlugin(para) {
 RemoveSourceWebpackPlugin.prototype.apply = function(compiler) {
   const remover = (compilation, callback) => {
     const keys = Object.keys(compilation.assets);
+
     this.regexList.forEach(regex => {
-      const source = keys.find(key => regex.test(key));
-      if (source) delete compilation.assets[source];
+      keys.forEach(key => {
+        if (regex.test(key)) delete compilation.assets[key];
+      });
     });
+
     if (callback) callback();
   };
 
